@@ -19,11 +19,11 @@ module.exports = function(grunt) {
       },
       dist: {
         // src: ['lib/<%= pkg.name %>.js'],
-        src: ['js/*.js'],
+        src: ['js/*.js','views/js/*.js'],
         dest: 'dist/<%= pkg.name %>.js'
       },
     },
-    /*
+
     htmlmin: {                                     // Task
       dist: {                                      // Target
         options: {                                 // Target options
@@ -31,17 +31,18 @@ module.exports = function(grunt) {
           collapseWhitespace: true
         },
         files: {                                   // Dictionary of files
-          'dist/index.html': 'src/index.html',     // 'destination': 'source'
-          'dist/contact.html': 'src/contact.html'
+          'dist/index.html': 'index.html',     // 'destination': 'source'
+          'dist/pizza.html': 'views/pizza.html'
         }
       },
       dev: {                                       // Another target
         files: {
-          'dist/index.html': 'src/index.html',
-          'dist/contact.html': 'src/contact.html'
+          'dist/index.html': 'index.html',
+          'dist/pizza.html': 'views/pizza.html'
         }
       }
     },
+    /*
     cssmin: {
 			combine: {
 				files: {

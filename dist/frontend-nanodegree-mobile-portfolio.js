@@ -452,6 +452,11 @@ var resizePizzas = function(size) {
   }
 
   // Iterates through pizza elements on the page and changes their widths
+  // Query selection of all randomPizzaContainers need only happen once per
+  // call, not for each iteration of the for loop. The delta x calculation and
+  // newwidth assignment likewise need happen only once per function call,
+  // since these are the same for every pizza. The for loop only needs to
+  // assign each pizza its new width. 
   function changePizzaSizes(size) {
     var randomPizzaContainers = document.querySelectorAll(".randomPizzaContainer");
     var dx = determineDx(randomPizzaContainers[0], size);

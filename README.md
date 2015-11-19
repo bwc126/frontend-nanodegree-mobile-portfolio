@@ -23,7 +23,7 @@ and similar services.
   Inlined CSS rules for the html, body, header, footer, and container tags, since those are used for the most content, and moved the importation of the remaining rules to after the body. This way, first render can happen sooner, and only minor visual discontinuities will occur when the browser does finally load the file with the remaining rules and re-renders.  
 
 #### Minification:
-  Grunt's commonjs template along with htmlmin were used to minify and combine JS, and minimize CSS and HTML to some extent. Greater minification could likely be achieved on the html files by adding more of htmlmin's options into its gruntfile JSON object, but most of PageSpeed Insight's original objections have been satisfied in this regard. 
+  Grunt's commonjs template along with htmlmin were used to minify and combine JS, and minimize CSS and HTML to some extent. Greater minification could likely be achieved on the html files by adding more of htmlmin's options into its gruntfile JSON object, but most of PageSpeed Insight's original objections have been satisfied in this regard.
 
 ### In views/js/main.js
 
@@ -34,9 +34,10 @@ and similar services.
   For changePizzaSizes, query selection of all randomPizzaContainers need only happen once per call, not for each iteration of the for loop. The delta x calculation and newwidth assignment likewise need happen only once per function call, since these are the same for every pizza. The for loop only needs to assign each pizza its new width.
 
 #### Animating Background Pizzas:
-  In updatePositions, move the sinusoid calculation outside of the for loop that iterates through each mover, it now lives in a 5-valued for loop that populates an array of phase values. This way, the sinusoid calc is done only five times per call to updatePositions (it only has five unique outcomes for a particular frame anyway, because only the modulo 5 result changes within a particular frame). Previously, the sinusoid calculation was done for every mover in every frame. The result is a dramatic drop in time required to generate frames, and over 120fps performance is now possible (~1ms resize time now vs >~20ms previously).
+  In updatePositions, move the sinusoid calculation outside of the for loop that iterates through each mover, it now lives in a 5-valued for loop that populates an array of phase values. This way, the sinusoid calc is done only five times per call to updatePositions (it only has five unique outcomes for a particular frame anyway, because only the modulo 5 result changes within a particular frame). Previously, the sinusoid calculation was done for every mover in every frame. The result is a dramatic drop in time required to generate frames, and over 120fps performance is now possible (~1ms resize time now vs >~20ms previously). The total number of pizzas is now dependent on the window size; instead of ~200, only 40 or so are now created and animated, further improving the performance when scrolling. 
 
-
+#### General:
+  Make use of Document Fragments where for loops previously appended to the DOM on every iteration; now iterations append to the fragment, which is then appended to the DOM only after concluding the for loop.
 
 
 

@@ -1,4 +1,4 @@
-/*! frontend-nanodegree-mobile-portfolio - v0.1.0 - 2015-11-18
+/*! frontend-nanodegree-mobile-portfolio - v0.1.0 - 2015-11-19
 * https://github.com/udacity/frontend-nanodegree-mobile-portfolio
 * Copyright (c) 2015 Brian Coe; Licensed MIT */
 // Measuring the Critical Rendering Path with Navigation Timing
@@ -456,15 +456,16 @@ var resizePizzas = function(size) {
   // call, not for each iteration of the for loop. The delta x calculation and
   // newwidth assignment likewise need happen only once per function call,
   // since these are the same for every pizza. The for loop only needs to
-  // assign each pizza its new width. 
+  // assign each pizza its new width.
   function changePizzaSizes(size) {
     var randomPizzaContainers = document.querySelectorAll(".randomPizzaContainer");
+    var numPizzas = randomPizzaContainers.length;
     var dx = determineDx(randomPizzaContainers[0], size);
     var newwidth = (randomPizzaContainers[0].offsetWidth + dx) + 'px';
-    for (var i = 0; i < randomPizzaContainers.length; i++) {
+    for (var i = 0; i < numPizzas; i++) {
       randomPizzaContainers[i].style.width = newwidth;
     }
-  }
+  };
 
   changePizzaSizes(size);
 
@@ -478,10 +479,11 @@ var resizePizzas = function(size) {
 window.performance.mark("mark_start_generating"); // collect timing data
 
 // This for-loop actually creates and appends all of the pizzas when the page loads
+var pizzaCollection = document.createDocumentFragment();
 for (var i = 2; i < 100; i++) {
-  var pizzasDiv = document.getElementById("randomPizzas");
-  pizzasDiv.appendChild(pizzaElementGenerator(i));
+  pizzaCollection.appendChild(pizzaElementGenerator(i));
 }
+document.getElementById("randomPizzas").appendChild(pizzaCollection);
 
 // User Timing API again. These measurements tell you how long it took to generate the initial pizzas
 window.performance.mark("mark_end_generating");
@@ -519,11 +521,11 @@ function updatePositions() {
   // ahead of iterating through each mover, and then passed to the mover loop
   for (var i = 0; i < 5; i++) {
     phase[i] = Math.sin((document.body.scrollTop / 1250) + (i % 5));
-  };
+  }
 
   for (var i = 0; i < items.length; i++) {
     items[i].style.left = items[i].basicLeft + 100 * phase[i % 5] + 'px';
-  };
+  }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
   // Super easy to create custom metrics.
@@ -542,15 +544,20 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
-    var elem = document.createElement('img');
+  var rows = window.screen.height / s;
+  var numMovers = cols * rows;
+  var pizzaMovers = document.createDocumentFragment();
+  var elem;
+  for (var i = 0; i < numMovers; i++) {
+    elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
     elem.style.height = "100px";
     elem.style.width = "73.333px";
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.querySelector("#movingPizzas1").appendChild(elem);
+    pizzaMovers.appendChild(elem);
   }
+  document.querySelector("#movingPizzas1").appendChild(pizzaMovers);
   updatePositions();
 });
